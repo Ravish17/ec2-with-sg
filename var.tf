@@ -2,6 +2,14 @@
 ####################   EC2 Bastion Host    #########################
 ####################################################################
 
+variable "access_key" {
+default = ""
+}
+
+variable "secret_key" {
+default = ""
+}
+
 variable "security-group-name" {
   default = "allow-ssh"
   type = string
