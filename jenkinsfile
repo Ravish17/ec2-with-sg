@@ -34,7 +34,7 @@ pipeline {
                 sh 'pwd;cd terraform ; terraform init -input=false'
                 sh 'pwd;cd terraform ; terraform workspace new ${environment}'
                 sh 'pwd;cd terraform ; terraform workspace select ${environment}'
-                sh "pwd;cd terraform ;terraform plan -var=access_key=$(AWS_ACCESS_KEY_ID) -var=secret_key=$(AWS_SECRET_ACCESS_KEY) -input=false -out tfplan "
+                sh "pwd;cd terraform ;terraform plan -var=access_key=${AWS_ACCESS_KEY_ID} -var=secret_key=${AWS_SECRET_ACCESS_KEY} -input=false -out tfplan "
                 sh 'pwd;cd terraform ;terraform show -no-color tfplan > tfplan.txt'
             }
         }
@@ -56,7 +56,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "pwd;cd terraform ; terraform apply -var=access_key=$(AWS_ACCESS_KEY_ID) -var=secret_key=$(AWS_SECRET_ACCESS_KEY) -input=false tfplan"
+                sh "pwd;cd terraform ; terraform apply -var=access_key=${AWS_ACCESS_KEY_ID} -var=secret_key=${AWS_SECRET_ACCESS_KEY} -input=false tfplan"
             }
         }
     }
