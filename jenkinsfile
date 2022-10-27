@@ -23,7 +23,7 @@ pipeline {
                  script{
                         dir("terraform")
                         {
-                            git "https://github.com/Ravish17/ec2-with-sg.git"
+                            git branch: 'main', url: 'https://github.com/Ravish17/ec2-with-sg.git'
                         }
                     }
                 }
