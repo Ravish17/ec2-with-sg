@@ -47,8 +47,8 @@ pipeline {
         
         stage('terrascan') {
             steps {
-                sh 'pwd;cd terraform ; terrascan scan'
-                sh 'pwd;cd terraform ; terrascan scan -o json > terrascan.json'
+                sh 'pwd;cd terraform ; terrascan scan || true'
+                sh 'pwd;cd terraform ; terrascan scan -o json > terrascan.json || true'
             }
         }
         
