@@ -157,13 +157,6 @@ resource "aws_instance" "bastion-host" {
   tags = {
     Name = var.instance-name
   }
-
-  provisioner "local-exec" {
-    #interpreter = ["/bin/bash.exe", "-c"]
-
-    command = <<-EOF
-    EOF
-  }
 }
 
 resource "aws_eip_association" "ec2-eip-association" {
