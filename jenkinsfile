@@ -40,7 +40,7 @@ pipeline {
         }
         stage('tflint') {
             steps {
-                sh 'pwd;cd terraform ; tflint'
+                sh 'pwd;cd terraform ; tflint || true'
                 sh 'pwd;cd terraform ; tflint -f json --no-color > tflint.json'
             }
         }
