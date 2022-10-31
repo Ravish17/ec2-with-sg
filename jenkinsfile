@@ -34,10 +34,25 @@ pipeline {
                 sh 'pwd;cd terraform ; terraform init -input=false'
                 sh 'pwd;cd terraform ; terraform workspace new ${environment}'
                 sh 'pwd;cd terraform ; terraform workspace select ${environment}'
-                sh "pwd;cd terraform ;terraform plan -var=access_key=${AWS_ACCESS_KEY_ID} -var=secret_key=${AWS_SECRET_ACCESS_KEY} -input=false -out tfplan "
+                sh "pwd;cd terraform ;terraform plan -input=false -out tfplan "
                 sh 'pwd;cd terraform ;terraform show -no-color tfplan > tfplan.txt'
             }
         }
+        stage('tflint') {
+            steps {
+                sh 'pwd;cd terraform ; tflint'
+                sh 'pwd;cd terraform ; tflint -f json --no-color > tflint.json'
+            }
+        }
+        
+        stage('terrascan') {
+            steps {
+                sh 'pwd;cd terraform ; terrascan scan'
+                sh 'pwd;cd terraform ; terrascan scan -o json > terrascan.json'
+            }
+        }
+        
+        
         stage('Approval') {
            when {
                not {
@@ -56,7 +71,7 @@ pipeline {
 
         stage('Apply') {
             steps {
-                sh "pwd;cd terraform ; terraform apply -var=access_key=${AWS_ACCESS_KEY_ID} -var=secret_key=${AWS_SECRET_ACCESS_KEY} -input=false tfplan"
+                sh "pwd;cd terraform ; terraform apply -input=false tfplan"
             }
         }
     }
