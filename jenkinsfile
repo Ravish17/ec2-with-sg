@@ -29,6 +29,28 @@ pipeline {
                 }
             }
 
+        
+        stage('TfLinting') {
+            steps {
+                sh 'pwd;cd terraform ; tflint || true'
+                sh 'pwd;cd terraform ; tflint -f json --no-color > tflint.json || true'
+            }
+        }
+        
+        stage('TfSec') {
+            steps {
+                sh 'pwd;cd terraform ; tfsec . || true'
+                sh 'pwd;cd terraform ; tfsec . -f csv  > tfsec.csv || true'
+            }
+        }
+        
+        stage('Terrascan') {
+            steps {
+                sh 'pwd;cd terraform ; terrascan scan || true'
+                sh 'pwd;cd terraform ; terrascan scan -o json > terrascan.json || true'
+            }
+        }
+        
         stage('Plan') {
             steps {
                 sh 'pwd;cd terraform ; terraform init -input=false'
@@ -38,20 +60,6 @@ pipeline {
                 sh 'pwd;cd terraform ;terraform show -no-color tfplan > tfplan.txt'
             }
         }
-        stage('tflint') {
-            steps {
-                sh 'pwd;cd terraform ; tflint || true'
-                sh 'pwd;cd terraform ; tflint -f json --no-color > tflint.json || true'
-            }
-        }
-        
-        stage('terrascan') {
-            steps {
-                sh 'pwd;cd terraform ; terrascan scan || true'
-                sh 'pwd;cd terraform ; terrascan scan -o json > terrascan.json || true'
-            }
-        }
-        
         
         stage('Approval') {
            when {
