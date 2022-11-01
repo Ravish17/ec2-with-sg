@@ -39,7 +39,7 @@ pipeline {
         
         stage('TfSec') {
             steps {
-                sh 'pwd;cd terraform ; tfsec . || true'
+                sh 'pwd;cd terraform ; tfsec . -f text || true'
                 sh 'pwd;cd terraform ; tfsec . -f csv  > tfsec.csv || true'
             }
         }
